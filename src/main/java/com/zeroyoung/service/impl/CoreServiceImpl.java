@@ -1,9 +1,6 @@
 package com.zeroyoung.service.impl;
 
-import com.zeroyoung.handler.ImageHandler;
-import com.zeroyoung.handler.LogHandler;
-import com.zeroyoung.handler.SubscribeHandler;
-import com.zeroyoung.handler.TextCommonHandler;
+import com.zeroyoung.handler.*;
 import com.zeroyoung.service.CoreService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -32,6 +29,12 @@ public class CoreServiceImpl implements CoreService {
     private TextCommonHandler textCommonHandler;
     @Autowired
     private ImageHandler imageHandler;
+    @Autowired
+    private VoiceHandler voiceHandler;
+    @Autowired
+    private LocationHandler locationHandler;
+    @Autowired
+    private VideoHandler videoHandler;
 
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -61,7 +64,16 @@ public class CoreServiceImpl implements CoreService {
         newRouter.rule().async(false).msgType(WxConsts.CUSTOM_MSG_IMAGE)
                 .handler(this.imageHandler).end();
 
+        //音频消息
+        newRouter.rule().async(false).msgType(WxConsts.CUSTOM_MSG_VOICE)
+                .handler(this.voiceHandler).end();
+        //视频消息
+        newRouter.rule().async(false).msgType(WxConsts.CUSTOM_MSG_VIDEO)
+                .handler(this.videoHandler).end();
 
+        //地理位置消息
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_LOCATION)
+                .handler(this.locationHandler).end();
 
          this.router = newRouter;
     }
