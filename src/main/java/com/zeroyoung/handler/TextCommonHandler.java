@@ -3,6 +3,7 @@ package com.zeroyoung.handler;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
@@ -30,6 +31,8 @@ public class TextCommonHandler extends  AbstractHandler {
                 .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
                 .build();
         logger.info("TextCommonHandler:"+m.getContent());
+        WxMpKefuMessage mpKefuMessage = WxMpKefuMessage.TEXT().content("nihao").toUser(wxMessage.getFromUser()).build();
+        wxMpService.getKefuService().sendKefuMessage(mpKefuMessage);
         return m;
     }
 }
