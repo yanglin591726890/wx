@@ -29,6 +29,23 @@
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
 
+	<!--mybatis配置-->
+	<!--2.创建sqlSessionFactory-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!--扫描entity-->
+		<property name="typeAliasesPackage" value="com.zeroyoung.entity"></property>
+		<!--注册mapper.xml-->
+		<property name="mapperLocations" value="classpath:/mapper/*.xml"></property>
+	</bean>
+
+	<!-- DAO接口所在包名,Sping自动查找其下的类 -->
+	<bean id ="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--这个是配置所有的mapper接口-->
+		<property name="basePackage" value="com.zeroyoung.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
 
 	
 	<!-- 添加事务管理 -->

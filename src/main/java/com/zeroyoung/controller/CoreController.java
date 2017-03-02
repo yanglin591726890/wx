@@ -66,6 +66,9 @@ public class CoreController extends BaseController {
             // 明文传输的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
             WxMpXmlOutMessage outMessage = this.coreService.route(inMessage);
+            if(outMessage==null){
+                return;
+            }
             response.getWriter().write(outMessage.toXml());
             return;
         }

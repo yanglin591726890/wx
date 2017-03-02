@@ -7,6 +7,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,12 @@ public class CoreServiceImpl implements CoreService {
     private LocationHandler locationHandler;
     @Autowired
     private VideoHandler videoHandler;
-
+    @Autowired
+    private UnSubscribeHandler unsubscribeHandler;
+    @Autowired
+    private NewsHandler newsHandler;
+    @Autowired
+    private TemplateMsgHandler templateMsgHandler;
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -57,6 +63,9 @@ public class CoreServiceImpl implements CoreService {
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_SUBSCRIBE).handler(this.subscribeHandler)
                 .end();
+        //取消关注事件
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_UNSUBSCRIBE).handler(this.unsubscribeHandler);
         //文本消息
         newRouter.rule().async(false).msgType(WxConsts.CUSTOM_MSG_TEXT)
                 .handler(this.textCommonHandler).end();
@@ -75,6 +84,22 @@ public class CoreServiceImpl implements CoreService {
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_LOCATION)
                 .handler(this.locationHandler).end();
 
+        // 图文消息
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.BUTTON_CLICK).eventKey("NEWS").handler(this.newsHandler)
+                .end();
+
+        // 模板消息
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.BUTTON_CLICK).eventKey("TEMPLATE").handler(this.templateMsgHandler)
+                .end();
+        //模板消息发送状态消息
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_TEMPLATESENDJOBFINISH).handler(this.templateMsgHandler).end();
+
+
+        //总的
+        newRouter.rule().handler(this.textCommonHandler).end();
          this.router = newRouter;
     }
 
