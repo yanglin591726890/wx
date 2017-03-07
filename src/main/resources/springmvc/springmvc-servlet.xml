@@ -17,6 +17,7 @@
 
     <mvc:resources location="/img/" mapping="/img/**"/>
     <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/common/" mapping="/common/**"/>
 
     <!--视图解析器： 定义视图的前缀后缀 -->
     <bean id="resourceView" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

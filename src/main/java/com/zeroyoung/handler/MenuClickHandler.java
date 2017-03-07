@@ -24,12 +24,16 @@ public class MenuClickHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
+        String key = wxMessage.getEventKey();
+        switch (key){
+            case "USERINFO":
+                break;
 
-        WxMpXmlOutTextMessage m = WxMpXmlOutMessage.TEXT().content("模板消息")
-                .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
-                .build();
+            default:
+                break;
+        }
 
-        return m;
+        return null;
     }
 
 }

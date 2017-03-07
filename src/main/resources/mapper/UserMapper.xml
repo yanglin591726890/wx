@@ -367,11 +367,11 @@
   </update>
 
   <select id="findUserByOpenId" resultType="com.zeroyoung.entity.User" parameterType="java.lang.String">
-    SELECT * FROM user WHERE openId=#{value}
+    SELECT * FROM user WHERE openId=#{openid}
   </select>
 
     <select id="deleteUserByOpenId" parameterType="java.lang.String">
         delete from user
-        where openId = #{value}
+        where openId = #{openid}
     </select>
 </mapper>

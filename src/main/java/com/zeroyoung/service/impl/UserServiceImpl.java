@@ -27,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int deleteUserByOpenId(String openId) throws Exception {
-        return userMapper.deleteUserByOpenId(openId);
+        userMapper.deleteUserByOpenId(openId);
+
+        return 0;
     }
 }

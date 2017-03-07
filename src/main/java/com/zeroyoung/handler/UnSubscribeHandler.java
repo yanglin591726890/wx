@@ -20,6 +20,8 @@ public class UnSubscribeHandler extends AbstractHandler {
     private UserService userService;
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
+
+        logger.info("有人取消关注");
         try {
             //从数据库中删除此人
             userService.deleteUserByOpenId(wxMessage.getFromUser());

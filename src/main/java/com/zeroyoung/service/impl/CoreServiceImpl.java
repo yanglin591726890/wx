@@ -42,6 +42,8 @@ public class CoreServiceImpl implements CoreService {
     private NewsHandler newsHandler;
     @Autowired
     private TemplateMsgHandler templateMsgHandler;
+    @Autowired
+    private MenuClickHandler menuClickHandler;
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -65,7 +67,8 @@ public class CoreServiceImpl implements CoreService {
                 .end();
         //取消关注事件
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
-                .event(WxConsts.EVT_UNSUBSCRIBE).handler(this.unsubscribeHandler);
+                .event(WxConsts.EVT_UNSUBSCRIBE).handler(this.unsubscribeHandler)
+                .end();
         //文本消息
         newRouter.rule().async(false).msgType(WxConsts.CUSTOM_MSG_TEXT)
                 .handler(this.textCommonHandler).end();
@@ -88,18 +91,20 @@ public class CoreServiceImpl implements CoreService {
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.BUTTON_CLICK).eventKey("NEWS").handler(this.newsHandler)
                 .end();
+        // 图文消息
+        newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.BUTTON_CLICK).eventKey("USERINFO").handler(this.newsHandler)
+                .end();
 
         // 模板消息
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.BUTTON_CLICK).eventKey("TEMPLATE").handler(this.templateMsgHandler)
                 .end();
+
         //模板消息发送状态消息
         newRouter.rule().async(false).msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_TEMPLATESENDJOBFINISH).handler(this.templateMsgHandler).end();
 
-
-        //总的
-        newRouter.rule().handler(this.textCommonHandler).end();
          this.router = newRouter;
     }
 

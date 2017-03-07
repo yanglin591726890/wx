@@ -38,8 +38,15 @@ public class MenuBuilder {
         button12.setName("模板消息");
         button12.setKey("TEMPLATE");
 
+        WxMenuButton button13 = new WxMenuButton();
+        button13.setType(WxConsts.BUTTON_CLICK);
+        button13.setName("用户信息");
+        button13.setKey("USERINFO");
+
+
         button1.getSubButtons().add(button11);
         button1.getSubButtons().add(button12);
+        button1.getSubButtons().add(button13);
 
 
         menu.getButtons().add(button1);
